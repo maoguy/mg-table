@@ -1,0 +1,22 @@
+.page-common-table-box{
+  background: #FFFFFF;
+  margin:16px 0;
+  /* height: calc(100% - 120px); */
+  /* min-height: 650px; */
+  min-height: calc(100vh - 250px);
+  padding: 20px;
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.05);
+  padding-bottom: 50px; /*为了让分页器有空间显示*/
+}
+.page-common-table-box .belle-table-wrapper{
+  margin-top: 10px;
+}
+.page-common-table-box .belle-table-wrapper .belle-table-tbody > tr > td,
+.page-common-table-box .belle-table-wrapper .belle-table-thead > tr > th{
+  padding: 9px 16px;
+}
+.page-common-table-box .pagination-right{
+  /* display: inline-block; */
+  float: right;
+  margin-top: 16px;
+}
