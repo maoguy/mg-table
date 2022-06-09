@@ -1,6 +1,5 @@
-// import {TFilterCondition} from '../index' ;
 import React from 'react';
-import TableTemplate,{useTableState} from './index' ;
+import TableTemplate,{ useTableState } from './index'
 
 function getUserList(_filterCondition:TFilterCondition){
   return {
@@ -11,7 +10,7 @@ function getUserList(_filterCondition:TFilterCondition){
       page:1 ,
       size:10
     } ,
-    msg:"hello123"
+    msg:"hello"
   } ;
 }
 
@@ -24,9 +23,7 @@ interface TFilterCondition {
 const Demo = () => {
   const [
     tableState ,
-    updateTableState ,
-    setFilterCondition ,
-    __setSelectedRowKeys__ //非请勿用
+    tableActions
   ] = useTableState<TFilterCondition>({
     isFetching:false ,
     filterCondition:{
@@ -48,7 +45,11 @@ const Demo = () => {
     
   },theFetch) ;
 
-
+  const {
+    updateTableState ,
+    setFilterCondition ,
+    // __setSelectedRowKeys__ //非请勿用
+  } = tableActions ;
 
   async function theFetch(filterCondition:TFilterCondition){ //获取数据
     console.log("filterCondition:",filterCondition) ;
@@ -75,7 +76,7 @@ const Demo = () => {
 
   function handleChangeOfMockOther(e:any){
     const mockOther = e.target.value ;
-    setFilterCondition((filterCondition)=>{
+    setFilterCondition((filterCondition: any)=>{
       return {
         ...filterCondition ,
         mockOther
@@ -86,7 +87,7 @@ const Demo = () => {
   return (
     <React.Fragment>
       <label>
-        模拟一个查询条件字段123:
+        模拟一个查询条件字段:
         <input
           value={tableState.filterCondition.mockOther}
           // eslint-disable-next-line react/jsx-no-bind
@@ -101,9 +102,7 @@ const Demo = () => {
       </button>
       <TableTemplate<TFilterCondition>
         tableState={tableState}
-        updateTableState={updateTableState}
-        setFilterCondition={setFilterCondition}
-        setSelectedRowKeys={__setSelectedRowKeys__}
+        tableActions={tableActions}
         tableProps={{
           columns:[
             {
@@ -132,9 +131,9 @@ const Demo = () => {
               key:"createTime"
             },
             {
-              title:"操作" ,
+              title:"操作123" ,
               key:"action" ,
-              render:(_text,_record)=>{
+              render:(_text: any,_record: any)=>{
                 return (<span>删除</span>)
               }
             }

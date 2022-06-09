@@ -24,9 +24,7 @@ interface TFilterCondition {
 const Demo = () => {
   const [
     tableState ,
-    updateTableState ,
-    setFilterCondition ,
-    __setSelectedRowKeys__ //非请勿用
+    tableActions
   ] = useTableState<TFilterCondition>({
     isFetching:false ,
     filterCondition:{
@@ -48,7 +46,11 @@ const Demo = () => {
     
   },theFetch) ;
 
-
+  const {
+    updateTableState ,
+    setFilterCondition ,
+    // __setSelectedRowKeys__ //非请勿用
+  } = tableActions ;
 
   async function theFetch(filterCondition:TFilterCondition){ //获取数据
     console.log("filterCondition:",filterCondition) ;
@@ -101,9 +103,7 @@ const Demo = () => {
       </button>
       <TableTemplate<TFilterCondition>
         tableState={tableState}
-        updateTableState={updateTableState}
-        setFilterCondition={setFilterCondition}
-        setSelectedRowKeys={__setSelectedRowKeys__}
+        tableActions={tableActions}
         tableProps={{
           columns:[
             {

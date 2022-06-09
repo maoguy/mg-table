@@ -39,16 +39,20 @@ type TSetSelectedRowKeys = (selectedRowKeys:React.Key[])=>any ;
 
 export type TTableStateAndActions<TFilterCondition> = [
   TTableState<TFilterCondition>,
-  TUpdateTableState ,
-  TSetFilterCondition<TFilterCondition> ,
-  TSetSelectedRowKeys
+  {
+    updateTableState :TUpdateTableState,
+    setFilterCondition:TSetFilterCondition<TFilterCondition> ,
+    __setSelectedRowKeys__:TSetSelectedRowKeys,
+  }  
 ] ; //表格状态钩子
 
 interface TProps<TFilterCondition> {
   tableState:TTableState<TFilterCondition> ;
-  updateTableState:TUpdateTableState ;
-  setFilterCondition:TSetFilterCondition<TFilterCondition> ;
-  setSelectedRowKeys:TSetSelectedRowKeys ;
+  tableActions:{
+    updateTableState:TUpdateTableState ;
+    setFilterCondition:TSetFilterCondition<TFilterCondition> ;
+    __setSelectedRowKeys__:TSetSelectedRowKeys ;    
+  },
   tableProps?:TableProps<any> ; //Table组件原有的PropsType
   headerNode?:any ;
   footerNode?:any ;
@@ -65,7 +69,9 @@ class TableTemplate<TFilterCondition> extends React.Component<TProps<TFilterCond
   
   handleChangeOfPagination = async (currentPage:number , pageSize:number) => { //分页器处理器
     const {
-      setFilterCondition ,
+      tableActions:{
+        setFilterCondition ,
+      }
     } = this.props ;
     setFilterCondition((filterCondition)=>{
       return {
@@ -94,9 +100,11 @@ class TableTemplate<TFilterCondition> extends React.Component<TProps<TFilterCond
   }
   handleChangeOfTableRowSelect = (selectedRowKeys: React.Key[]) => {
     const {
-      setSelectedRowKeys
+      tableActions:{
+        __setSelectedRowKeys__
+      }
     } = this.props ;
-    setSelectedRowKeys(selectedRowKeys) ;
+    __setSelectedRowKeys__(selectedRowKeys) ;
   }
   onRow = (record: { [x: string]: any; })=>{
     const {
@@ -107,15 +115,17 @@ class TableTemplate<TFilterCondition> extends React.Component<TProps<TFilterCond
         } ,
         selectedRowKeys=[] ,
       },
-      setSelectedRowKeys
+      tableActions:{
+        __setSelectedRowKeys__
+      }
     } = this.props ;
     return {
       onClick: (_event: any) => {
         if(selectedRowKeys.includes(record[rowKey] as never)){//如果存在，则取消
           const newSelectedRowKeys = selectedRowKeys.filter(key => key !== record[rowKey]);
-          setSelectedRowKeys(rowSelectionType==="radio"?[]:newSelectedRowKeys) ;
+          __setSelectedRowKeys__(rowSelectionType==="radio"?[]:newSelectedRowKeys) ;
         }else{//如果不存在，则选中
-          setSelectedRowKeys([...rowSelectionType==="radio"?[]:selectedRowKeys,...[record[rowKey]]]) ;
+          __setSelectedRowKeys__([...rowSelectionType==="radio"?[]:selectedRowKeys,...[record[rowKey]]]) ;
         }
       }
     }
@@ -306,9 +316,11 @@ function useTableState<TFilterCondition extends TFilterConditionExtends> (
   }
   return [
     tableState ,
-    updateTableState ,
-    setFilterCondition ,
-    setSelectedRowKeys
+    {
+      updateTableState ,
+      setFilterCondition ,
+      __setSelectedRowKeys__:setSelectedRowKeys
+    }
   ] ;
 }
 
