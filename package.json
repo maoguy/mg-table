@@ -1,6 +1,6 @@
 {
   "name": "mg-table-template",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "a table component with template and stateHook",
   "author": "maoguy",
   "license": "MIT",
